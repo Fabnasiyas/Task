@@ -1,14 +1,12 @@
 import express from 'express';
-
+import authMiddleware from '../middleware/authMiddleare.js';
 
 const router = express.Router();
 
-router.post('/',async(req,res)=>{
-    console.log('====================================');
-    console.log(req.body);
-    const { username, email, password } = req.body;
-
-    console.log('====================================');
-} );
+// Protected route for users
+router.get('/home', authMiddleware('user'), (req, res) => {
+  console.log('from the user role..........................');
+  res.json({ message: 'User profile access granted', user: req.user });
+});
 
 export default router;

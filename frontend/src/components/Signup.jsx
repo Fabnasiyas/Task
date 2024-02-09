@@ -1,14 +1,17 @@
+
 import axios from 'axios';
 import { useState } from 'react';
+import { Link, Navigate } from 'react-router-dom';
 
 const Signup = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isSignupSuccess, setSignupSuccess] = useState(false);
 
   const handleSignup = async () => {
     try {
-      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BASE_URL}/`, {
+      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BASE_URL}/userAuth/register`, {
         username,
         email,
         password,
@@ -16,6 +19,9 @@ const Signup = () => {
 
       // Assuming the response contains data you want to use
       console.log('Signup successful:', response.data);
+
+      // Set state to indicate successful signup
+      setSignupSuccess(true);
     } catch (error) {
       console.error('Error signing up:', error.message);
     }
@@ -23,6 +29,7 @@ const Signup = () => {
 
   return (
     <div>
+      {isSignupSuccess && <Navigate to="/login" />} {/* Conditional rendering of Navigate */}
       <h2>Signup</h2>
       <label>
         Username:
@@ -40,6 +47,8 @@ const Signup = () => {
       </label>
       <br />
       <button onClick={handleSignup}>Signup</button>
+      <Link to='/login'><button>login</button></Link>
+
     </div>
   );
 };
